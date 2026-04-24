@@ -19,7 +19,7 @@ interface BookCardProps {
 function BookCover({ thumbnail, title }: BookCoverProps) {
   if (!thumbnail) {
     return (
-      <div className="bg-white/6 flex h-28 w-24 items-center justify-center rounded-2xl border border-dashed border-white/20 text-[0.7rem] font-semibold tracking-[0.2em] text-sand-300/70">
+      <div className="flex h-16 w-12 shrink-0 items-center justify-center rounded border border-dashed border-slate-200 bg-slate-50 text-center text-[0.6rem] font-medium leading-4 text-slate-400">
         {fallbackCoverLabel}
       </div>
     );
@@ -28,7 +28,7 @@ function BookCover({ thumbnail, title }: BookCoverProps) {
   return (
     <img
       alt={`${title} 표지`}
-      className="h-28 w-24 rounded-2xl object-cover shadow-[0_12px_40px_rgba(13,16,23,0.25)]"
+      className="h-16 w-12 shrink-0 rounded object-cover"
       src={thumbnail}
     />
   );
@@ -40,33 +40,29 @@ function MetadataRow({ label, value }: MetadataRowProps) {
   }
 
   return (
-    <div className="text-slate-200/88 flex flex-wrap items-center gap-2 text-sm">
-      <span className="bg-white/8 rounded-full px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-sand-300/90">
-        {label}
-      </span>
-      <span>{value}</span>
+    <div className="flex min-w-0 items-center gap-1 text-xs text-slate-500">
+      <span className="shrink-0 text-slate-400">{label}</span>
+      <span className="truncate">{value}</span>
     </div>
   );
 }
 
 export default function BookCard({ book }: BookCardProps) {
   return (
-    <article className="border-white/12 bg-white/8 grid gap-4 rounded-[28px] border p-4 shadow-[0_24px_80px_rgba(8,10,18,0.2)] backdrop-blur md:grid-cols-[auto_1fr] md:p-5">
+    <article className="grid grid-cols-[auto_1fr] gap-3 rounded-md border border-transparent p-2 transition hover:border-slate-200 hover:bg-slate-50">
       <BookCover thumbnail={book.thumbnail} title={book.title} />
-      <div className="space-y-3">
-        <div className="space-y-1">
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-coral-200/80">
-            Book Result
-          </p>
-          <h3 className="text-xl font-semibold text-white">{book.title}</h3>
+      <div className="min-w-0 space-y-1">
+        <h3 className="truncate text-sm font-semibold text-slate-950">
+          {book.title}
+        </h3>
+
+        <div className="flex min-w-0 flex-wrap gap-x-3 gap-y-1">
+          <MetadataRow label="저자" value={book.author} />
+          <MetadataRow label="출판사" value={book.publisher} />
+          <MetadataRow label="출간" value={book.publishedAt} />
         </div>
 
-        <div className="space-y-2.5">
-          <MetadataRow label="Author" value={book.author} />
-          <MetadataRow label="Publisher" value={book.publisher} />
-          <MetadataRow label="Published" value={book.publishedAt} />
-          <MetadataRow label="ISBN" value={book.isbn} />
-        </div>
+        <MetadataRow label="ISBN" value={book.isbn} />
       </div>
     </article>
   );
