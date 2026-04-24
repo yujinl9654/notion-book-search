@@ -1,9 +1,21 @@
+import type {
+  ChangeEventHandler,
+  FormEventHandler,
+} from "react";
+
+interface SearchPanelProps {
+  inputValue: string;
+  isSubmitting: boolean;
+  onChange: ChangeEventHandler<HTMLInputElement>;
+  onSubmit: FormEventHandler<HTMLFormElement>;
+}
+
 export default function SearchPanel({
   inputValue,
   isSubmitting,
   onChange,
   onSubmit,
-}) {
+}: SearchPanelProps) {
   return (
     <section className="border-white/12 bg-[#11131d]/78 rounded-[32px] border p-5 shadow-[0_30px_100px_rgba(6,8,18,0.45)] backdrop-blur md:p-7">
       <div className="max-w-2xl space-y-3">
@@ -15,8 +27,8 @@ export default function SearchPanel({
           <span className="block text-sand-200">명확하게 시작합니다.</span>
         </h1>
         <p className="max-w-xl text-sm leading-7 text-slate-300 md:text-base">
-          React와 Tailwind로 만든 첫 검색 화면입니다. 지금은 목 데이터로
-          동작하며, 검색 상태를 명확하게 나누는 데 집중합니다.
+          React와 Tailwind, TypeScript로 만든 첫 검색 화면입니다. 지금은
+          목 데이터로 동작하며, 검색 상태를 명확하게 나누는 데 집중합니다.
         </p>
       </div>
 
@@ -59,4 +71,3 @@ export default function SearchPanel({
     </section>
   );
 }
-

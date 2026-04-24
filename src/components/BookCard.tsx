@@ -1,6 +1,22 @@
+import type { Book } from "../types/book";
+
 const fallbackCoverLabel = "표지 없음";
 
-function BookCover({ thumbnail, title }) {
+interface BookCoverProps {
+  thumbnail: string;
+  title: string;
+}
+
+interface MetadataRowProps {
+  label: string;
+  value?: string;
+}
+
+interface BookCardProps {
+  book: Book;
+}
+
+function BookCover({ thumbnail, title }: BookCoverProps) {
   if (!thumbnail) {
     return (
       <div className="bg-white/6 flex h-28 w-24 items-center justify-center rounded-2xl border border-dashed border-white/20 text-[0.7rem] font-semibold tracking-[0.2em] text-sand-300/70">
@@ -18,7 +34,7 @@ function BookCover({ thumbnail, title }) {
   );
 }
 
-function MetadataRow({ label, value }) {
+function MetadataRow({ label, value }: MetadataRowProps) {
   if (!value) {
     return null;
   }
@@ -33,7 +49,7 @@ function MetadataRow({ label, value }) {
   );
 }
 
-export default function BookCard({ book }) {
+export default function BookCard({ book }: BookCardProps) {
   return (
     <article className="border-white/12 bg-white/8 grid gap-4 rounded-[28px] border p-4 shadow-[0_24px_80px_rgba(8,10,18,0.2)] backdrop-blur md:grid-cols-[auto_1fr] md:p-5">
       <BookCover thumbnail={book.thumbnail} title={book.title} />

@@ -25,13 +25,13 @@
 ## 현재 상태
 
 - 저장소는 문서 부트스트랩 이후 첫 프론트엔드 구현을 시작했습니다.
-- 프론트엔드는 `Vite + React` 조합으로 구성했습니다.
+- 프론트엔드는 `Vite + React + TypeScript` 조합으로 구성했습니다.
 - 스타일링은 Tailwind CSS를 사용합니다.
-- ESLint는 flat config 기반으로 React, Hooks, a11y, import order, Tailwind class order 규칙을 적용했습니다.
+- ESLint는 flat config 기반으로 TypeScript, React, Hooks, a11y, import order, Tailwind class order 규칙을 적용했습니다.
 - 로컬 런타임 기준은 `nvm`의 Node `24.15.0`과 npm `11.12.1`입니다.
 - 현재 검색 화면은 목 데이터로 동작합니다.
 - Git 저장소는 초기화되었고 `origin`은 `https://github.com/yujinl9654/notion-book-search.git`로 연결되어 있습니다.
-- 자동화 테스트는 아직 없지만 `lint`와 `build`는 통과합니다.
+- 자동화 테스트는 아직 없지만 `lint`, `build`, `typecheck`를 기준 품질 게이트로 사용합니다.
 - 현재 기준 문서는 여전히 `docs/`입니다.
 
 ## 제품 방향
@@ -75,11 +75,13 @@
 
 ## 현재 구현 기준
 
-- 앱 엔트리: `src/main.jsx`
-- 화면 구성: `src/App.jsx`
+- 앱 엔트리: `src/main.tsx`
+- 화면 구성: `src/App.tsx`
 - 검색 UI 컴포넌트: `src/components/`
-- 목 데이터: `src/data/mockBooks.js`
-- 검색 로직: `src/lib/searchBooks.js`
+- 목 데이터: `src/data/mockBooks.ts`
+- 검색 로직: `src/lib/searchBooks.ts`
+- 공용 타입: `src/types/book.ts`
 - 스타일 진입점: `src/index.css`
+- TypeScript 설정: `tsconfig.json`
 - Node 버전 고정: `.nvmrc`
 - GitHub 원격: `origin`

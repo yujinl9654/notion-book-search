@@ -1,13 +1,15 @@
 import { mockBooks } from "../data/mockBooks";
 
+import type { Book } from "../types/book";
+
 const FAILURE_KEYWORD = "error";
 const LATENCY_MS = 650;
 
-function normalize(text) {
+function normalize(text: string): string {
   return text.trim().toLowerCase();
 }
 
-function matchesQuery(book, query) {
+function matchesQuery(book: Book, query: string): boolean {
   const normalizedQuery = normalize(query);
 
   if (!normalizedQuery) {
@@ -19,8 +21,8 @@ function matchesQuery(book, query) {
     .some((value) => normalize(value).includes(normalizedQuery));
 }
 
-export async function searchBooks(query) {
-  await new Promise((resolve) => {
+export async function searchBooks(query: string): Promise<Book[]> {
+  await new Promise<void>((resolve) => {
     window.setTimeout(resolve, LATENCY_MS);
   });
 
@@ -30,4 +32,3 @@ export async function searchBooks(query) {
 
   return mockBooks.filter((book) => matchesQuery(book, query));
 }
-

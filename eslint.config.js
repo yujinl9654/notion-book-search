@@ -6,6 +6,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tailwindcss from "eslint-plugin-tailwindcss";
 import globals from "globals";
+import tseslint from "typescript-eslint";
 
 const commonReactRules = {
   ...reactPlugin.configs.recommended.rules,
@@ -19,8 +20,9 @@ export default [
     ignores: ["dist", "node_modules"],
   },
   js.configs.recommended,
+  ...tseslint.configs.recommended,
   {
-    files: ["**/*.{js,jsx}"],
+    files: ["**/*.{js,mjs,cjs,ts,tsx}"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
@@ -57,7 +59,7 @@ export default [
     },
   },
   {
-    files: ["src/**/*.{js,jsx}"],
+    files: ["src/**/*.{ts,tsx}"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
@@ -88,6 +90,14 @@ export default [
     },
     rules: {
       ...commonReactRules,
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
+      "no-unused-vars": "off",
       "react/prop-types": "off",
       "react-refresh/only-export-components": [
         "warn",

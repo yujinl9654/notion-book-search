@@ -1,4 +1,6 @@
-export const mockBooks = [
+import type { Book } from "../types/book";
+
+export const mockBooks: Book[] = [
   {
     id: "isbn-9788936434120",
     title: "불편한 편의점",
@@ -79,4 +81,3 @@ export const mockBooks = [
       "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=600&q=80",
   },
 ];
-

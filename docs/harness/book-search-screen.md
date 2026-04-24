@@ -8,10 +8,10 @@ feature 문서보다 범위를 좁게 두며, 각 케이스는 미래 자동화 
 
 ## 현재 검증 스냅샷
 
-- 현재 구현은 React + Tailwind 기반의 목 검색 화면입니다.
+- 현재 구현은 React + TypeScript + Tailwind 기반의 목 검색 화면입니다.
 - 수동 확인 기준으로 `idle`, `loading`, `success`, `empty`, `error` 상태를 한 화면에서 재현할 수 있습니다.
 - 오류 상태는 `error`가 포함된 검색어로 재현합니다.
-- 자동화 테스트는 아직 없으며, 현재 검증은 `eslint`와 `vite build` 통과 및 수동 상태 확인 기준입니다.
+- 자동화 테스트는 아직 없으며, 현재 검증은 `eslint`, `vite build`, `tsc --noEmit` 통과 및 수동 상태 확인 기준입니다.
 
 ## [BOOK-SEARCH-001] 초기 화면에 검색 수단이 보인다
 

@@ -1,10 +1,14 @@
 import { startTransition, useDeferredValue, useEffect, useState } from "react";
 
+
 import BookCard from "./components/BookCard";
 import SearchPanel from "./components/SearchPanel";
 import { searchBooks } from "./lib/searchBooks";
 
-const statusTheme = {
+import type { Book, RequestStatus, SearchRequestState } from "./types/book";
+import type { ChangeEvent, FormEvent } from "react";
+
+const statusTheme: Record<RequestStatus, string> = {
   empty: "border-white/10 bg-white/5 text-slate-200",
   error: "border-rose-300/30 bg-rose-200/10 text-rose-50",
   idle: "border-white/10 bg-white/5 text-slate-200",
@@ -12,7 +16,55 @@ const statusTheme = {
   success: "border-emerald-300/20 bg-emerald-200/10 text-emerald-50",
 };
 
-function StatusBanner({ message, status }) {
+const featuredBooks: Book[] = [
+  {
+    author: "Ryan Holiday",
+    id: "sample-1",
+    isbn: "9780525538581",
+    publishedAt: "2019",
+    publisher: "Portfolio",
+    thumbnail:
+      "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=600&q=80",
+    title: "Stillness Is the Key",
+  },
+  {
+    author: "이슬아",
+    id: "sample-2",
+    isbn: "9788998441012",
+    publishedAt: "2018",
+    publisher: "헤엄",
+    thumbnail:
+      "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=600&q=80",
+    title: "일간 이슬아 수필집",
+  },
+  {
+    author: "James Clear",
+    id: "sample-3",
+    isbn: "9780735211292",
+    publishedAt: "2018",
+    publisher: "Avery",
+    thumbnail: "",
+    title: "Atomic Habits",
+  },
+];
+
+interface StatusBannerProps {
+  message: string;
+  status: RequestStatus;
+}
+
+interface SectionHeaderProps {
+  count: number;
+  query: string;
+  status: RequestStatus;
+}
+
+interface EmptyStateProps {
+  query: string;
+  status: "empty" | "error";
+}
+
+function StatusBanner({ message, status }: StatusBannerProps) {
   return (
     <div
       className={`rounded-3xl border px-4 py-4 text-sm leading-7 shadow-[0_18px_60px_rgba(8,10,18,0.18)] backdrop-blur ${statusTheme[status]}`}
@@ -22,8 +74,8 @@ function StatusBanner({ message, status }) {
   );
 }
 
-function SectionHeader({ count, query, status }) {
-  const titleByStatus = {
+function SectionHeader({ count, query, status }: SectionHeaderProps) {
+  const titleByStatus: Record<RequestStatus, string> = {
     empty: "다른 키워드로 다시 시도해보세요.",
     error: "검색을 다시 시도할 수 있습니다.",
     idle: "추천 도서 샘플",
@@ -42,13 +94,15 @@ function SectionHeader({ count, query, status }) {
         </h2>
       </div>
       <p className="text-sm leading-6 text-slate-300">
-        {query ? `"${query}" 기준으로 현재 상태를 보여주고 있습니다.` : "첫 구현은 목 데이터 기반으로 동작합니다."}
+        {query
+          ? `"${query}" 기준으로 현재 상태를 보여주고 있습니다.`
+          : "첫 구현은 목 데이터 기반으로 동작합니다."}
       </p>
     </header>
   );
 }
 
-function EmptyState({ query, status }) {
+function EmptyState({ query, status }: EmptyStateProps) {
   if (status === "error") {
     return (
       <div className="bg-rose-200/8 rounded-[28px] border border-rose-200/20 p-6 text-sm leading-7 text-rose-50">
@@ -62,25 +116,21 @@ function EmptyState({ query, status }) {
     );
   }
 
-  if (status === "empty") {
-    return (
-      <div className="bg-white/6 rounded-[28px] border border-white/10 p-6 text-sm leading-7 text-slate-200">
-        <p className="text-base font-semibold">
-          `{query}`와 일치하는 책을 찾지 못했습니다.
-        </p>
-        <p className="mt-2 text-slate-300">
-          제목 일부, 저자명, ISBN으로 다시 검색해보세요.
-        </p>
-      </div>
-    );
-  }
-
-  return null;
+  return (
+    <div className="bg-white/6 rounded-[28px] border border-white/10 p-6 text-sm leading-7 text-slate-200">
+      <p className="text-base font-semibold">
+        `{query}`와 일치하는 책을 찾지 못했습니다.
+      </p>
+      <p className="mt-2 text-slate-300">
+        제목 일부, 저자명, ISBN으로 다시 검색해보세요.
+      </p>
+    </div>
+  );
 }
 
 export default function App() {
   const [inputValue, setInputValue] = useState("");
-  const [requestState, setRequestState] = useState({
+  const [requestState, setRequestState] = useState<SearchRequestState>({
     errorMessage: "",
     items: [],
     status: "idle",
@@ -131,18 +181,18 @@ export default function App() {
       }
     }
 
-    runSearch();
+    void runSearch();
 
     return () => {
       isCancelled = true;
     };
   }, [requestState.submittedQuery]);
 
-  function handleChange(event) {
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setInputValue(event.target.value);
   }
 
-  function handleSubmit(event) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const trimmedQuery = inputValue.trim();
@@ -221,41 +271,9 @@ export default function App() {
 
           {requestState.status === "idle" && (
             <div className="grid gap-4 [content-visibility:auto] md:grid-cols-2 xl:grid-cols-3">
-              <BookCard
-                book={{
-                  author: "Ryan Holiday",
-                  id: "sample-1",
-                  isbn: "9780525538581",
-                  publishedAt: "2019",
-                  publisher: "Portfolio",
-                  thumbnail:
-                    "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=600&q=80",
-                  title: "Stillness Is the Key",
-                }}
-              />
-              <BookCard
-                book={{
-                  author: "이슬아",
-                  id: "sample-2",
-                  isbn: "9788998441012",
-                  publishedAt: "2018",
-                  publisher: "헤엄",
-                  thumbnail:
-                    "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=600&q=80",
-                  title: "일간 이슬아 수필집",
-                }}
-              />
-              <BookCard
-                book={{
-                  author: "James Clear",
-                  id: "sample-3",
-                  isbn: "9780735211292",
-                  publishedAt: "2018",
-                  publisher: "Avery",
-                  thumbnail: "",
-                  title: "Atomic Habits",
-                }}
-              />
+              {featuredBooks.map((book) => (
+                <BookCard book={book} key={book.id} />
+              ))}
             </div>
           )}
         </section>
@@ -263,4 +281,3 @@ export default function App() {
     </main>
   );
 }
-
