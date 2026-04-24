@@ -28,10 +28,10 @@
 - 프론트엔드는 `Vite + React + TypeScript` 조합으로 구성했습니다.
 - 스타일링은 Tailwind CSS를 사용합니다.
 - ESLint는 flat config 기반으로 TypeScript, React, Hooks, a11y, import order, Tailwind class order 규칙을 적용했습니다.
-- 로컬 런타임 기준은 `nvm`의 Node `24.15.0`과 npm `11.12.1`입니다.
+- 로컬 런타임 기준은 `nvm`의 Node `24.15.0`과 pnpm `10.21.0`입니다.
 - 현재 검색 화면은 목 데이터로 동작합니다.
 - Git 저장소는 초기화되었고 `origin`은 `https://github.com/yujinl9654/notion-book-search.git`로 연결되어 있습니다.
-- 자동화 테스트는 아직 없지만 `lint`, `build`, `typecheck`를 기준 품질 게이트로 사용합니다.
+- 자동화 테스트는 아직 없지만 `pnpm lint`, `pnpm build`, `pnpm typecheck`를 기준 품질 게이트로 사용합니다.
 - 현재 기준 문서는 여전히 `docs/`입니다.
 
 ## 제품 방향
@@ -84,4 +84,6 @@
 - 스타일 진입점: `src/index.css`
 - TypeScript 설정: `tsconfig.json`
 - Node 버전 고정: `.nvmrc`
+- 패키지 매니저: `pnpm`
+- 패키지 lockfile: `pnpm-lock.yaml`
 - GitHub 원격: `origin`

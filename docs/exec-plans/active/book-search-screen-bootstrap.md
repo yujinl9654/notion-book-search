@@ -15,12 +15,14 @@
 - 프론트엔드 스택은 `Vite + React + TypeScript`입니다.
 - 스타일링은 Tailwind CSS를 사용합니다.
 - 첫 데이터 소스는 목 데이터입니다.
-- 기본 품질 게이트로 `eslint`, `vite build`, `tsc --noEmit`를 사용합니다.
+- 패키지 매니저는 `pnpm`입니다.
+- 기본 품질 게이트로 `pnpm lint`, `pnpm build`, `pnpm typecheck`를 사용합니다.
 
 ## 현재 완료된 항목
 
 - Vite 기반 React 앱 셸을 생성했습니다.
 - Tailwind CSS, TypeScript, ESLint 구성을 추가했습니다.
+- npm lockfile을 pnpm lockfile로 교체했습니다.
 - 목 데이터 기반 검색 UI와 상태 전환을 구현했습니다.
 - Node 버전은 `.nvmrc`의 `24.15.0`으로 고정했습니다.
 - GitHub 원격 `origin`을 연결했습니다.
