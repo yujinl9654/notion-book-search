@@ -1,12 +1,20 @@
-import { startTransition, useDeferredValue, useEffect, useState } from "react";
+import {
+  startTransition,
+  useDeferredValue,
+  useEffect,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 
-
-import BookCard from "./components/BookCard";
-import SearchPanel from "./components/SearchPanel";
-import { searchBooks } from "./lib/searchBooks";
-
-import type { Book, RequestStatus, SearchRequestState } from "./types/book";
-import type { ChangeEvent, FormEvent } from "react";
+import {
+  BookCard,
+  searchBooks,
+  type Book,
+  type RequestStatus,
+  type SearchRequestState,
+} from "../../../entities/book";
+import { SearchPanel } from "../../../features/book-search";
 
 const statusTheme: Record<RequestStatus, string> = {
   empty: "border-white/10 bg-white/5 text-slate-200",
@@ -128,7 +136,7 @@ function EmptyState({ query, status }: EmptyStateProps) {
   );
 }
 
-export default function App() {
+export default function BookSearchPage() {
   const [inputValue, setInputValue] = useState("");
   const [requestState, setRequestState] = useState<SearchRequestState>({
     errorMessage: "",
@@ -254,7 +262,8 @@ export default function App() {
             status={requestState.status}
           />
 
-          {(requestState.status === "empty" || requestState.status === "error") && (
+          {(requestState.status === "empty" ||
+            requestState.status === "error") && (
             <EmptyState
               query={requestState.submittedQuery}
               status={requestState.status}

@@ -1,6 +1,6 @@
-import { mockBooks } from "../data/mockBooks";
+import { mockBooks } from "./mockBooks";
 
-import type { Book } from "../types/book";
+import type { Book } from "../model/types";
 
 const FAILURE_KEYWORD = "error";
 const LATENCY_MS = 650;

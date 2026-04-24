@@ -1,4 +1,4 @@
-import type { Book } from "../types/book";
+import type { Book } from "../model/types";
 
 const fallbackCoverLabel = "표지 없음";
 

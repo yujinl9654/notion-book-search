@@ -75,12 +75,11 @@
 
 ## 현재 구현 기준
 
-- 앱 엔트리: `src/main.tsx`
-- 화면 구성: `src/App.tsx`
-- 검색 UI 컴포넌트: `src/components/`
-- 목 데이터: `src/data/mockBooks.ts`
-- 검색 로직: `src/lib/searchBooks.ts`
-- 공용 타입: `src/types/book.ts`
+- 앱 엔트리: `src/app/main.tsx`
+- 앱 셸: `src/app/App.tsx`
+- 도서 검색 페이지: `src/pages/book-search/`
+- 검색 실행 UI: `src/features/book-search/`
+- 도서 엔티티 UI, 타입, 목 검색 API: `src/entities/book/`
 - 스타일 진입점: `src/index.css`
 - TypeScript 설정: `tsconfig.json`
 - Node 버전 고정: `.nvmrc`
