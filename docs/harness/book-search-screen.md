@@ -11,26 +11,27 @@ feature 문서보다 범위를 좁게 두며, 각 케이스는 미래 자동화 
 - 현재 구현은 React + TypeScript + Tailwind 기반의 목 검색 위젯입니다.
 - 수동 확인 기준으로 `idle`, `loading`, `success`, `empty`, `error` 상태를 한 화면에서 재현할 수 있습니다.
 - 오류 상태는 `error`가 포함된 검색어로 재현합니다.
-- 자동화 테스트는 아직 없으며, 현재 검증은 `pnpm lint`, `pnpm build`, `pnpm typecheck` 통과 및 수동 상태 확인 기준입니다.
+- 자동화 테스트는 `src/pages/book-search/ui/BookSearchPage.test.tsx`에서 시작했습니다.
+- 현재 검증은 `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm typecheck` 통과 및 필요 시 수동 상태 확인 기준입니다.
 
-## [BOOK-SEARCH-001] 초기 화면에 검색 수단이 보인다
+## [BOOK-SEARCH-001] 초기 화면에 검색 입력창이 보인다
 
 - Priority: P1
 - Purpose: 사용자가 화면에 들어오자마자 어떻게 검색을 시작하는지 알 수 있어야 합니다.
 - Conditions: 아직 검색을 한 번도 실행하지 않은 초기 진입 상태입니다.
 - Input / Action: 도서 검색 화면을 엽니다.
-- Expected Result: 검색 입력창과 눈에 보이는 검색 실행 수단이 작은 위젯 안에 렌더링되고, 이 위젯이 도서 검색용이라는 맥락이 드러납니다.
+- Expected Result: 검색 입력창이 작은 위젯 안에 렌더링되고, 불필요한 설명 텍스트 없이 도서 검색을 시작할 수 있습니다.
 - Prohibited Result: 빈 컨테이너가 보이거나, 입력창이 없거나, 검색 화면인지 알 수 없는 상태로 진입합니다.
 - Test Candidate: e2e
 
-## [BOOK-SEARCH-002] 비어 있지 않은 검색어는 실제 검색을 시작한다
+## [BOOK-SEARCH-002] 비어 있지 않은 검색어는 debounce 이후 실제 검색을 시작한다
 
 - Priority: P1
 - Purpose: 의미 있는 검색어 입력이 실제 검색 흐름으로 이어져야 합니다.
 - Conditions: 화면은 유휴 상태이고, 사용자는 공백이 아닌 문자를 하나 이상 입력했습니다.
-- Input / Action: 기본 검색 실행 수단으로 검색어를 제출합니다.
-- Expected Result: 화면이 로딩 상태로 전환되고, 제출한 검색어 기준으로 결과 요청이 시작됩니다.
-- Prohibited Result: UI가 동작을 무시하거나, 유휴 상태에 머물거나, 두 번 이상 시도해야 로딩이 나타납니다.
+- Input / Action: 검색어를 입력한 뒤 debounce 시간이 지날 때까지 기다립니다.
+- Expected Result: 화면이 로딩 상태로 전환되고, 입력한 검색어 기준으로 결과 요청이 시작됩니다.
+- Prohibited Result: UI가 동작을 무시하거나, 유휴 상태에 머물거나, 별도 버튼 제출 없이는 검색이 시작되지 않습니다.
 - Test Candidate: integration
 
 ## [BOOK-SEARCH-003] 빈 문자열 또는 공백만 있는 검색어는 요청을 시작하지 않는다
@@ -38,7 +39,7 @@ feature 문서보다 범위를 좁게 두며, 각 케이스는 미래 자동화 
 - Priority: P1
 - Purpose: 불필요한 요청과 혼란스러운 빈 검색을 막습니다.
 - Conditions: 입력값이 빈 문자열이거나 공백만 포함합니다.
-- Input / Action: 검색을 시도합니다.
+- Input / Action: 빈 문자열 또는 공백만 입력합니다.
 - Expected Result: 요청이 시작되지 않고, 사용자는 같은 화면에서 바로 입력을 수정할 수 있습니다.
 - Prohibited Result: 빈 검색어로 요청이 나가거나, 공백만 입력했는데 로딩 상태로 들어갑니다.
 - Test Candidate: integration
@@ -48,7 +49,7 @@ feature 문서보다 범위를 좁게 두며, 각 케이스는 미래 자동화 
 - Priority: P1
 - Purpose: 진행 중인 작업이 사용자에게 읽히도록 합니다.
 - Conditions: 유효한 검색 요청이 시작되었고 아직 응답이 끝나지 않았습니다.
-- Input / Action: 검색을 실행한 뒤 응답이 끝나기 전 화면을 확인합니다.
+- Input / Action: 검색어를 입력하고 debounce 이후 응답이 끝나기 전 화면을 확인합니다.
 - Expected Result: 입력창 아래 드롭다운 영역에 눈에 보이는 로딩 표시가 나타나고, 사용자는 결과를 기다리는 중임을 알 수 있습니다.
 - Prohibited Result: 요청이 진행 중인데도 화면이 유휴 상태처럼 보이거나, 이미 끝난 상태 메시지가 남아 있습니다.
 - Test Candidate: integration
@@ -98,7 +99,7 @@ feature 문서보다 범위를 좁게 두며, 각 케이스는 미래 자동화 
 - Priority: P2
 - Purpose: 이전 결과나 메시지가 새 검색 결과처럼 오해되지 않게 합니다.
 - Conditions: 화면이 이미 성공, 빈 결과, 오류 중 하나의 상태를 한 번 거쳤습니다.
-- Input / Action: 다른 유효한 검색어를 입력하고 다시 검색합니다.
+- Input / Action: 다른 유효한 검색어를 입력하고 debounce 이후 결과를 확인합니다.
 - Expected Result: 새 요청이 현재 활성 상태를 가져가고, 최종적으로 최신 검색어 기준 결과로 해석되는 화면이 보여야 합니다.
 - Prohibited Result: 새 요청이 끝난 뒤에도 이전 결과나 메시지가 최신 검색 결과처럼 남아 있습니다.
 - Test Candidate: integration
@@ -110,14 +111,20 @@ feature 문서보다 범위를 좁게 두며, 각 케이스는 미래 자동화 
 - Conditions: 화면이 성공, 빈 결과, 오류 상태 중 하나에 있습니다.
 - Input / Action: 검색어를 수정하고 다시 제출합니다.
 - Expected Result: 페이지를 새로고침하지 않아도 다시 검색이 실행됩니다.
-- Prohibited Result: 입력이나 버튼이 계속 비활성화되거나, 폼이 더 이상 동작하지 않거나, 새로고침만이 유일한 복구 수단이 됩니다.
+- Prohibited Result: 입력이 계속 비활성화되거나, 자동 검색이 더 이상 동작하지 않거나, 새로고침만이 유일한 복구 수단이 됩니다.
 - Test Candidate: e2e
 
 ## 첫 자동화 후보
 
-코드가 생기면 아래 케이스부터 자동화하는 것을 권장합니다.
+현재 자동화된 케이스:
 
-1. `BOOK-SEARCH-003` 입력 검증 integration 테스트
-2. `BOOK-SEARCH-006` 결과 렌더링 복원력 integration 테스트
-3. `BOOK-SEARCH-007` 빈 결과 흐름 e2e 테스트
-4. `BOOK-SEARCH-008` 오류 복구 흐름 e2e 테스트
+1. `BOOK-SEARCH-001` 초기 위젯에서 불필요한 설명 텍스트와 검색 버튼 없이 입력창만 보이는지 확인
+2. `BOOK-SEARCH-002` 검색어 입력 후 debounce 시간이 지나면 자동 검색이 시작되고 결과가 렌더링되는지 확인
+3. `BOOK-SEARCH-003` 공백만 있는 검색어는 요청 상태로 전환되지 않는지 확인
+
+다음 자동화 후보:
+
+1. `BOOK-SEARCH-006` 결과 렌더링 복원력 integration 테스트
+2. `BOOK-SEARCH-007` 빈 결과 흐름 e2e 테스트
+3. `BOOK-SEARCH-008` 오류 복구 흐름 e2e 테스트
+4. `BOOK-SEARCH-009` 새 검색이 이전 최종 상태를 덮어쓰는 integration 테스트

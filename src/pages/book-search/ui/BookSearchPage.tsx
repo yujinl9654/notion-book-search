@@ -3,7 +3,6 @@ import {
   useEffect,
   useState,
   type ChangeEvent,
-  type FormEvent,
 } from "react";
 
 import {
@@ -13,6 +12,8 @@ import {
   type SearchRequestState,
 } from "../../../entities/book";
 import { SearchPanel } from "../../../features/book-search";
+
+const SEARCH_DEBOUNCE_MS = 350;
 
 interface DropdownMessageProps {
   query: string;
@@ -45,6 +46,38 @@ export default function BookSearchPage() {
     status: "idle",
     submittedQuery: "",
   });
+
+  useEffect(() => {
+    const trimmedQuery = inputValue.trim();
+
+    if (!trimmedQuery) {
+      startTransition(() => {
+        setRequestState({
+          errorMessage: "",
+          items: [],
+          status: "idle",
+          submittedQuery: "",
+        });
+      });
+
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      startTransition(() => {
+        setRequestState({
+          errorMessage: "",
+          items: [],
+          status: "loading",
+          submittedQuery: trimmedQuery,
+        });
+      });
+    }, SEARCH_DEBOUNCE_MS);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [inputValue]);
 
   useEffect(() => {
     if (!requestState.submittedQuery) {
@@ -99,34 +132,6 @@ export default function BookSearchPage() {
     setInputValue(event.target.value);
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const trimmedQuery = inputValue.trim();
-
-    if (!trimmedQuery) {
-      startTransition(() => {
-        setRequestState({
-          errorMessage: "",
-          items: [],
-          status: "idle",
-          submittedQuery: "",
-        });
-      });
-
-      return;
-    }
-
-    startTransition(() => {
-      setRequestState({
-        errorMessage: "",
-        items: [],
-        status: "loading",
-        submittedQuery: trimmedQuery,
-      });
-    });
-  }
-
   const isSubmitting = requestState.status === "loading";
 
   return (
@@ -137,7 +142,6 @@ export default function BookSearchPage() {
             inputValue={inputValue}
             isSubmitting={isSubmitting}
             onChange={handleChange}
-            onSubmit={handleSubmit}
           />
 
           {requestState.status !== "idle" ? (

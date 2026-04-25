@@ -31,7 +31,7 @@
 - 로컬 런타임 기준은 `nvm`의 Node `24.15.0`과 pnpm `10.21.0`입니다.
 - 현재 검색 화면은 목 데이터로 동작합니다.
 - Git 저장소는 초기화되었고 `origin`은 `https://github.com/yujinl9654/notion-book-search.git`로 연결되어 있습니다.
-- 자동화 테스트는 아직 없지만 `pnpm lint`, `pnpm build`, `pnpm typecheck`를 기준 품질 게이트로 사용합니다.
+- 자동화 테스트는 Vitest + Testing Library 기반으로 시작했으며, `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm typecheck`를 기준 품질 게이트로 사용합니다.
 - 현재 기준 문서는 여전히 `docs/`입니다.
 
 ## 제품 방향
@@ -40,7 +40,7 @@
 
 첫 구현에 대한 현재 가정:
 
-- 사용자는 키워드를 입력하고 검색을 실행할 수 있어야 합니다.
+- 사용자는 키워드를 입력하면 debounce 이후 자동으로 검색이 실행되어야 합니다.
 - 화면은 로딩, 성공, 빈 결과, 오류 상태를 지원해야 합니다.
 - 검색 결과는 입력창 아래 드롭다운 목록으로 나타나야 합니다.
 - 결과 항목은 책 표지, 제목, 저자, 출판사, 출간 연도, ISBN 정도의 짧은 정보만 보여야 합니다.
@@ -73,6 +73,7 @@
 - 회귀 보장은 harness 문서에 둡니다.
 - 구현 순서는 exec plan 문서에 둡니다.
 - 동작이 바뀌면 같은 턴에 feature 문서와 harness 문서를 함께 갱신합니다.
+- 기능 동작이 추가되거나 바뀌면 같은 턴에 해당 동작을 막아줄 테스트 코드를 함께 작성합니다.
 - 실제 코드가 생기기 전에는 구현 경로를 문서에 추가하지 않습니다.
 
 ## 현재 구현 기준
@@ -82,6 +83,7 @@
 - 도서 검색 페이지: `src/pages/book-search/`
 - 검색 실행 UI: `src/features/book-search/`
 - 도서 엔티티 UI, 타입, 목 검색 API: `src/entities/book/`
+- 테스트 셋업: `src/test/setup.ts`
 - 스타일 진입점: `src/index.css`
 - TypeScript 설정: `tsconfig.json`
 - Node 버전 고정: `.nvmrc`
