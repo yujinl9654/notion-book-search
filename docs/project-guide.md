@@ -65,6 +65,8 @@
 
 - `docs/product-specs/book-search-screen.md`: 첫 화면의 요구사항과 상태 정의
 - `docs/harness/book-search-screen.md`: 첫 화면의 회귀 방지 기준
+- `docs/harness/pre-commit-quality-gates.md`: 커밋 전 필수 검증 명령과 체크리스트
+- `docs/exec-plans/README.md`: 기능 작업별 실행 계획 작성과 완료 보관 규칙
 - `docs/exec-plans/active/book-search-screen-bootstrap.md`: 첫 구현 작업 순서
 
 ## 문서 운영 규칙
@@ -72,6 +74,8 @@
 - 제품 의도는 feature 문서에 둡니다.
 - 회귀 보장은 harness 문서에 둡니다.
 - 구현 순서는 exec plan 문서에 둡니다.
+- 기능 작업을 시작할 때는 `docs/exec-plans/active/`에 실행 계획 문서를 만듭니다.
+- 기능 작업이 커밋되거나 `develop`에 머지되면 해당 실행 계획 문서를 `docs/exec-plans/completed/`로 옮깁니다.
 - 동작이 바뀌면 같은 턴에 feature 문서와 harness 문서를 함께 갱신합니다.
 - 기능 동작이 추가되거나 바뀌면 같은 턴에 해당 동작을 막아줄 테스트 코드를 함께 작성합니다.
 - 실제 코드가 생기기 전에는 구현 경로를 문서에 추가하지 않습니다.

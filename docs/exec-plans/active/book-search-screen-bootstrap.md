@@ -9,6 +9,8 @@
 - `docs/project-guide.md`
 - `docs/product-specs/book-search-screen.md`
 - `docs/harness/book-search-screen.md`
+- `docs/harness/pre-commit-quality-gates.md`
+- `docs/exec-plans/README.md`
 
 ## 이미 결정된 사항
 

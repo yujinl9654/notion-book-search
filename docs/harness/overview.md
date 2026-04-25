@@ -93,3 +93,4 @@ Harness 문서는 아래를 설명합니다.
 - debounce, 지연 응답, 재시도 같은 시간 기반 동작은 fake timer로 시간을 명시적으로 제어합니다.
 - 새 기능 테스트는 harness 케이스 ID와 연결될 수 있을 만큼 작고 구체적인 단위로 작성합니다.
 - 품질 게이트는 `pnpm lint`, `pnpm test`, `pnpm typecheck`, `pnpm build`를 함께 통과하는 것을 기준으로 합니다.
+- 커밋 전 필수 검증 순서와 체크리스트는 `docs/harness/pre-commit-quality-gates.md`를 따릅니다.
