@@ -136,50 +136,51 @@ export default function BookSearchPage() {
 
   return (
     <main className="min-h-screen bg-[#f7f7f5] text-slate-950">
-      <div className="mx-auto w-full max-w-xl px-3 py-3">
-        <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="mx-auto w-[480px]">
+        <section
+          className="flex h-[480px] w-[480px] flex-col overflow-hidden border border-slate-200 bg-white p-0 shadow-sm"
+          data-testid="book-search-widget"
+        >
           <SearchPanel
             inputValue={inputValue}
             isSubmitting={isSubmitting}
             onChange={handleChange}
           />
 
-          {requestState.status !== "idle" ? (
-            <div className="mt-3 rounded-lg border border-slate-200 bg-white p-1 shadow-sm">
-              {requestState.status === "success" ? (
-                <div
-                  className="max-h-80 space-y-1 overflow-y-auto"
-                  role="listbox"
-                >
-                  {requestState.items.map((book) => (
-                    <BookCard book={book} key={book.id} />
-                  ))}
-                </div>
-              ) : null}
+          <div
+            className="min-h-0 flex-1 overflow-y-auto bg-white p-2"
+            data-testid="book-search-results"
+          >
+            {requestState.status === "success" ? (
+              <div className="space-y-1" role="listbox">
+                {requestState.items.map((book) => (
+                  <BookCard book={book} key={book.id} />
+                ))}
+              </div>
+            ) : null}
 
-              {requestState.status === "loading" ? (
-                <DropdownMessage
-                  query={requestState.submittedQuery}
-                  status={requestState.status}
-                />
-              ) : null}
+            {requestState.status === "loading" ? (
+              <DropdownMessage
+                query={requestState.submittedQuery}
+                status={requestState.status}
+              />
+            ) : null}
 
-              {requestState.status === "empty" ? (
-                <DropdownMessage
-                  query={requestState.submittedQuery}
-                  status={requestState.status}
-                />
-              ) : null}
+            {requestState.status === "empty" ? (
+              <DropdownMessage
+                query={requestState.submittedQuery}
+                status={requestState.status}
+              />
+            ) : null}
 
-              {requestState.status === "error" ? (
-                <DropdownMessage
-                  query={requestState.submittedQuery}
-                  status={requestState.status}
-                  text={requestState.errorMessage}
-                />
-              ) : null}
-            </div>
-          ) : null}
+            {requestState.status === "error" ? (
+              <DropdownMessage
+                query={requestState.submittedQuery}
+                status={requestState.status}
+                text={requestState.errorMessage}
+              />
+            ) : null}
+          </div>
         </section>
       </div>
     </main>

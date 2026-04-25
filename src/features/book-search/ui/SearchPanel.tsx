@@ -12,14 +12,14 @@ export default function SearchPanel({
   onChange,
 }: SearchPanelProps) {
   return (
-    <section>
+    <section className="shrink-0">
       <label className="sr-only" htmlFor="book-search-input">
         도서 검색어
       </label>
       <input
         aria-busy={isSubmitting}
         autoComplete="off"
-        className="h-11 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+        className="h-16 w-full rounded-none border-0 border-b border-slate-200 bg-white px-5 text-base text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-slate-400"
         id="book-search-input"
         name="query"
         onChange={onChange}

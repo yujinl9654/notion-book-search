@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import BookSearchPage from "./BookSearchPage";
@@ -12,6 +12,7 @@ describe("BookSearchPage", () => {
   });
 
   afterEach(() => {
+    cleanup();
     vi.runOnlyPendingTimers();
     vi.useRealTimers();
   });
@@ -19,10 +20,16 @@ describe("BookSearchPage", () => {
   it("renders only the search input without extra description text or a submit button", () => {
     render(<BookSearchPage />);
 
+    expect(screen.getByTestId("book-search-widget")).toHaveClass(
+      "h-[480px]",
+      "w-[480px]",
+      "p-0",
+    );
     expect(screen.getByLabelText("도서 검색어")).toBeInTheDocument();
     expect(screen.queryByText("도서 검색")).not.toBeInTheDocument();
     expect(screen.queryByText(/Notion에 추가할 책/)).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "검색" })).not.toBeInTheDocument();
+    expect(screen.getByTestId("book-search-results")).toBeEmptyDOMElement();
   });
 
   it("automatically searches after the debounce delay", async () => {
@@ -51,6 +58,9 @@ describe("BookSearchPage", () => {
 
     expect(screen.getByText("채식주의자")).toBeInTheDocument();
     expect(screen.getByRole("listbox")).toBeInTheDocument();
+    expect(screen.getByTestId("book-search-results")).toHaveClass(
+      "overflow-y-auto",
+    );
   });
 
   it("does not search when the input contains only whitespace", () => {
