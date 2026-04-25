@@ -2,7 +2,7 @@
 
 ## 개요
 
-이 저장소는 하네스 엔지니어링 방식으로 도서 검색 경험을 만드는 데 사용합니다.
+이 저장소는 하네스 엔지니어링 방식으로 Notion 임베드용 도서 검색 위젯을 만드는 데 사용합니다.
 
 처음부터 UI 코드를 바로 쓰는 대신, 먼저 아래 내용을 문서로 고정합니다.
 
@@ -31,18 +31,20 @@
 - 로컬 런타임 기준은 `nvm`의 Node `24.15.0`과 pnpm `10.21.0`입니다.
 - 현재 검색 화면은 목 데이터로 동작합니다.
 - Git 저장소는 초기화되었고 `origin`은 `https://github.com/yujinl9654/notion-book-search.git`로 연결되어 있습니다.
-- 자동화 테스트는 아직 없지만 `pnpm lint`, `pnpm build`, `pnpm typecheck`를 기준 품질 게이트로 사용합니다.
+- 자동화 테스트는 Vitest + Testing Library 기반으로 시작했으며, `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm typecheck`를 기준 품질 게이트로 사용합니다.
 - 현재 기준 문서는 여전히 `docs/`입니다.
 
 ## 제품 방향
 
-첫 번째 제품 범위는 사용자가 책을 검색하고 결과를 확인할 수 있는 화면입니다.
+첫 번째 제품 범위는 사용자가 Notion 페이지 안에서 책을 검색하고 결과를 간단히 확인할 수 있는 임베드 위젯입니다.
 
 첫 구현에 대한 현재 가정:
 
-- 사용자는 키워드를 입력하고 검색을 실행할 수 있어야 합니다.
+- 사용자는 키워드를 입력하면 debounce 이후 자동으로 검색이 실행되어야 합니다.
 - 화면은 로딩, 성공, 빈 결과, 오류 상태를 지원해야 합니다.
-- 검색 결과는 사람이 빠르게 훑을 수 있는 목록 형태여야 합니다.
+- 검색 결과는 입력창 아래 드롭다운 목록으로 나타나야 합니다.
+- 결과 항목은 책 표지, 제목, 저자, 출판사, 출간 연도, ISBN 정도의 짧은 정보만 보여야 합니다.
+- 위젯은 Notion 임베드 영역 안에서 쓰기 좋게 단순하고 좁은 레이아웃을 유지해야 합니다.
 - 첫 단계는 책을 찾는 흐름에 집중하고, 컬렉션 관리까지 확장하지 않습니다.
 
 구현 전 다시 확인할 항목:
@@ -63,6 +65,8 @@
 
 - `docs/product-specs/book-search-screen.md`: 첫 화면의 요구사항과 상태 정의
 - `docs/harness/book-search-screen.md`: 첫 화면의 회귀 방지 기준
+- `docs/harness/pre-commit-quality-gates.md`: 커밋 전 필수 검증 명령과 체크리스트
+- `docs/exec-plans/README.md`: 기능 작업별 실행 계획 작성과 완료 보관 규칙
 - `docs/exec-plans/active/book-search-screen-bootstrap.md`: 첫 구현 작업 순서
 
 ## 문서 운영 규칙
@@ -70,7 +74,10 @@
 - 제품 의도는 feature 문서에 둡니다.
 - 회귀 보장은 harness 문서에 둡니다.
 - 구현 순서는 exec plan 문서에 둡니다.
+- 기능 작업을 시작할 때는 `docs/exec-plans/active/`에 실행 계획 문서를 만듭니다.
+- 기능 작업이 커밋되거나 `develop`에 머지되면 해당 실행 계획 문서를 `docs/exec-plans/completed/`로 옮깁니다.
 - 동작이 바뀌면 같은 턴에 feature 문서와 harness 문서를 함께 갱신합니다.
+- 기능 동작이 추가되거나 바뀌면 같은 턴에 해당 동작을 막아줄 테스트 코드를 함께 작성합니다.
 - 실제 코드가 생기기 전에는 구현 경로를 문서에 추가하지 않습니다.
 
 ## 현재 구현 기준
@@ -80,6 +87,7 @@
 - 도서 검색 페이지: `src/pages/book-search/`
 - 검색 실행 UI: `src/features/book-search/`
 - 도서 엔티티 UI, 타입, 목 검색 API: `src/entities/book/`
+- 테스트 셋업: `src/test/setup.ts`
 - 스타일 진입점: `src/index.css`
 - TypeScript 설정: `tsconfig.json`
 - Node 버전 고정: `.nvmrc`

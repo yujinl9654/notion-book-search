@@ -9,6 +9,8 @@
 - `docs/project-guide.md`
 - `docs/product-specs/book-search-screen.md`
 - `docs/harness/book-search-screen.md`
+- `docs/harness/pre-commit-quality-gates.md`
+- `docs/exec-plans/README.md`
 
 ## 이미 결정된 사항
 
@@ -16,7 +18,7 @@
 - 스타일링은 Tailwind CSS를 사용합니다.
 - 첫 데이터 소스는 목 데이터입니다.
 - 패키지 매니저는 `pnpm`입니다.
-- 기본 품질 게이트로 `pnpm lint`, `pnpm build`, `pnpm typecheck`를 사용합니다.
+- 기본 품질 게이트로 `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm typecheck`를 사용합니다.
 
 ## 현재 완료된 항목
 
@@ -24,6 +26,7 @@
 - Tailwind CSS, TypeScript, ESLint 구성을 추가했습니다.
 - npm lockfile을 pnpm lockfile로 교체했습니다.
 - 목 데이터 기반 검색 UI와 상태 전환을 구현했습니다.
+- Vitest + Testing Library 기반 자동화 테스트를 추가했습니다.
 - Node 버전은 `.nvmrc`의 `24.15.0`으로 고정했습니다.
 - GitHub 원격 `origin`을 연결했습니다.
 
@@ -40,8 +43,9 @@
    - 최소한 제목은 노출하고, 선택적 메타데이터 누락을 안전하게 처리합니다.
 5. harness 기준으로 수동 검증합니다.
    - `BOOK-SEARCH-001`부터 `BOOK-SEARCH-010`까지 확인합니다.
-6. 첫 자동화 테스트를 추가합니다.
-   - harness 문서에 적은 첫 자동화 후보부터 시작합니다.
+6. 기능 동작마다 자동화 테스트를 추가합니다.
+   - harness 문서에 적은 후보를 우선합니다.
+   - 새 기능이나 회귀 방지 기준이 생기면 같은 변경 안에 테스트를 함께 작성합니다.
 
 ## 첫 구현 완료 기준
 
@@ -49,6 +53,7 @@
 - 화면이 로딩, 성공, 빈 결과, 오류 상태를 분명하게 지원합니다.
 - 선택적 필드 누락이 결과 렌더링을 깨뜨리지 않습니다.
 - 문서화된 P1 harness 케이스를 실행 중인 앱에서 수동으로 확인할 수 있습니다.
+- 변경된 기능은 자동화 테스트로 최소 한 가지 이상 검증됩니다.
 
 ## 아직 필요한 결정
 
