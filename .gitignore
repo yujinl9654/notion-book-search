@@ -4,3 +4,6 @@ dist
 .vite
 .idea
 *.tsbuildinfo
+.env
+.env.*
+!.env.example

@@ -29,7 +29,7 @@
 - 스타일링은 Tailwind CSS를 사용합니다.
 - ESLint는 flat config 기반으로 TypeScript, React, Hooks, a11y, import order, Tailwind class order 규칙을 적용했습니다.
 - 로컬 런타임 기준은 `nvm`의 Node `24.15.0`과 pnpm `10.21.0`입니다.
-- 현재 검색 화면은 목 데이터로 동작합니다.
+- 현재 검색 화면은 Naver 책 검색 API를 Vite dev proxy를 통해 호출합니다.
 - Git 저장소는 초기화되었고 `origin`은 `https://github.com/yujinl9654/notion-book-search.git`로 연결되어 있습니다.
 - 자동화 테스트는 Vitest + Testing Library 기반으로 시작했으며, `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm typecheck`를 기준 품질 게이트로 사용합니다.
 - 현재 기준 문서는 여전히 `docs/`입니다.
@@ -46,16 +46,16 @@
 - 결과 항목은 책 표지, 제목, 저자, 출판사, 출간 연도, ISBN 정도의 짧은 정보만 보여야 합니다.
 - 위젯은 Notion 임베드 영역 안에서 쓰기 좋게 단순하고 좁은 레이아웃을 유지해야 합니다.
 - 첫 단계는 책을 찾는 흐름에 집중하고, 컬렉션 관리까지 확장하지 않습니다.
+- 결과 목록의 끝까지 스크롤하면 같은 검색어의 다음 결과 묶음을 이어서 불러옵니다.
 
 구현 전 다시 확인할 항목:
 
-- 어떤 데이터 소스를 검색에 사용할지
+- 배포 환경에서 Naver API 인증 헤더를 주입할 서버 또는 서버리스 경로를 어떻게 둘지
 - 이후 단계에서 Notion 저장 기능을 포함할지
 
 ## 첫 범위에서 제외할 항목
 
 - 인증
-- 페이지네이션 또는 무한 스크롤
 - 정렬과 고급 필터
 - Notion 저장 동작
 - 모바일 네이티브 앱
@@ -67,7 +67,7 @@
 - `docs/harness/book-search-screen.md`: 첫 화면의 회귀 방지 기준
 - `docs/harness/pre-commit-quality-gates.md`: 커밋 전 필수 검증 명령과 체크리스트
 - `docs/exec-plans/README.md`: 기능 작업별 실행 계획 작성과 완료 보관 규칙
-- `docs/exec-plans/active/book-search-screen-bootstrap.md`: 첫 구현 작업 순서
+- `docs/exec-plans/completed/`: 완료된 구현 작업 순서와 기록
 
 ## 문서 운영 규칙
 
@@ -86,7 +86,7 @@
 - 앱 셸: `src/app/App.tsx`
 - 도서 검색 페이지: `src/pages/book-search/`
 - 검색 실행 UI: `src/features/book-search/`
-- 도서 엔티티 UI, 타입, 목 검색 API: `src/entities/book/`
+- 도서 엔티티 UI, 타입, Naver 검색 API 클라이언트: `src/entities/book/`
 - 테스트 셋업: `src/test/setup.ts`
 - 스타일 진입점: `src/index.css`
 - TypeScript 설정: `tsconfig.json`
