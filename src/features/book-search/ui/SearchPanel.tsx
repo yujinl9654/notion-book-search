@@ -15,26 +15,26 @@ export default function SearchPanel({
 }: SearchPanelProps) {
   return (
     <section className="shrink-0 font-mono">
-      <div className="flex h-14 items-center border-b border-[#9ca3af] px-6">
-        <div className="flex items-center gap-2">
+      <div className="flex h-11 items-center border-b border-[#9ca3af] px-6">
+        <div className="flex items-center gap-1.5">
           <span
             aria-hidden="true"
-            className="h-4 w-4 rounded-full bg-[#ff6b74]"
+            className="h-3 w-3 rounded-full bg-[#ff6b74]"
           />
           <span
             aria-hidden="true"
-            className="h-4 w-4 rounded-full bg-[#f6c95b]"
+            className="h-3 w-3 rounded-full bg-[#f6c95b]"
           />
           <span
             aria-hidden="true"
-            className="h-4 w-4 rounded-full bg-[#68d989]"
+            className="h-3 w-3 rounded-full bg-[#68d989]"
           />
-          <span className="ml-1 text-xl tracking-normal text-[#69707d]">
+          <span className="ml-1 text-base font-medium tracking-normal text-[#69707d]">
             search
           </span>
         </div>
 
-        <div className="ml-auto hidden items-center gap-4 text-lg text-[#c2c6ce] md:flex">
+        <div className="ml-auto hidden items-center gap-3 text-sm text-[#c2c6ce] md:flex">
           <span>&quot;&quot;로 감쌌거나 버튼을 클릭하세요 -&gt;</span>
           <span>[정확히 일치]</span>
           <button
@@ -47,17 +47,17 @@ export default function SearchPanel({
         </div>
       </div>
 
-      <div className="flex h-[74px] items-center gap-4 px-7">
+      <div className="flex h-14 items-center gap-3 px-7">
         <span
           aria-hidden="true"
-          className="text-2xl font-semibold text-[#00cf45]"
+          className="text-base font-semibold text-[#00cf45]"
         >
           $
         </span>
-        <span className="text-2xl font-semibold text-[#69707d]">find</span>
+        <span className="text-base font-semibold text-[#69707d]">find</span>
         <svg
           aria-hidden="true"
-          className="h-6 w-6 shrink-0 text-[#8c939f]"
+          className="h-4 w-4 shrink-0 text-[#8c939f]"
           fill="none"
           viewBox="0 0 24 24"
         >
@@ -76,7 +76,7 @@ export default function SearchPanel({
         <input
           aria-busy={isSubmitting}
           autoComplete="off"
-          className="h-full min-w-0 flex-1 border-0 bg-transparent text-2xl font-semibold tracking-normal text-[#111827] outline-none placeholder:text-[#9ca3af]"
+          className="h-full min-w-0 flex-1 border-0 bg-transparent text-base font-semibold tracking-normal text-[#111827] outline-none placeholder:text-[#9ca3af]"
           id="book-search-input"
           name="query"
           onChange={onChange}
