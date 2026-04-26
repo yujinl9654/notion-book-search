@@ -21,11 +21,13 @@ describe("BookSearchPage", () => {
     render(<BookSearchPage />);
 
     expect(screen.getByTestId("book-search-widget")).toHaveClass(
-      "h-[480px]",
-      "w-[480px]",
+      "rounded-[22px]",
+      "border-2",
       "p-0",
     );
     expect(screen.getByLabelText("도서 검색어")).toBeInTheDocument();
+    expect(screen.getByText("search")).toBeInTheDocument();
+    expect(screen.getByText("find")).toBeInTheDocument();
     expect(screen.queryByText("도서 검색")).not.toBeInTheDocument();
     expect(screen.queryByText(/Notion에 추가할 책/)).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "검색" })).not.toBeInTheDocument();

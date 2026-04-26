@@ -132,23 +132,28 @@ export default function BookSearchPage() {
     setInputValue(event.target.value);
   }
 
+  function handleClear() {
+    setInputValue("");
+  }
+
   const isSubmitting = requestState.status === "loading";
 
   return (
-    <main className="min-h-screen bg-[#f7f7f5] text-slate-950">
-      <div className="mx-auto w-[480px]">
+    <main className="min-h-screen bg-white px-3 py-3 text-slate-950">
+      <div className="mx-auto w-full max-w-[2048px]">
         <section
-          className="flex h-[480px] w-[480px] flex-col overflow-hidden border border-slate-200 bg-white p-0 shadow-sm"
+          className="flex w-full flex-col overflow-hidden rounded-[22px] border-2 border-[#9ca3af] bg-white p-0"
           data-testid="book-search-widget"
         >
           <SearchPanel
             inputValue={inputValue}
             isSubmitting={isSubmitting}
             onChange={handleChange}
+            onClear={handleClear}
           />
 
           <div
-            className="min-h-0 flex-1 overflow-y-auto bg-white p-2"
+            className="max-h-[420px] min-h-0 overflow-y-auto bg-white px-4 pb-4 empty:hidden"
             data-testid="book-search-results"
           >
             {requestState.status === "success" ? (
