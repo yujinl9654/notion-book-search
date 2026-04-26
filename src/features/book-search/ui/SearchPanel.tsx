@@ -4,28 +4,86 @@ interface SearchPanelProps {
   inputValue: string;
   isSubmitting: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  onClear: () => void;
 }
 
 export default function SearchPanel({
   inputValue,
   isSubmitting,
   onChange,
+  onClear,
 }: SearchPanelProps) {
   return (
-    <section className="shrink-0">
-      <label className="sr-only" htmlFor="book-search-input">
-        도서 검색어
-      </label>
-      <input
-        aria-busy={isSubmitting}
-        autoComplete="off"
-        className="h-16 w-full rounded-none border-0 border-b border-slate-200 bg-white px-5 text-base text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-slate-400"
-        id="book-search-input"
-        name="query"
-        onChange={onChange}
-        placeholder="도서명, 저자, ISBN 검색"
-        value={inputValue}
-      />
+    <section className="shrink-0 font-mono">
+      <div className="flex h-14 items-center border-b border-[#9ca3af] px-6">
+        <div className="flex items-center gap-2">
+          <span
+            aria-hidden="true"
+            className="h-4 w-4 rounded-full bg-[#ff6b74]"
+          />
+          <span
+            aria-hidden="true"
+            className="h-4 w-4 rounded-full bg-[#f6c95b]"
+          />
+          <span
+            aria-hidden="true"
+            className="h-4 w-4 rounded-full bg-[#68d989]"
+          />
+          <span className="ml-1 text-xl tracking-normal text-[#69707d]">
+            search
+          </span>
+        </div>
+
+        <div className="ml-auto hidden items-center gap-4 text-lg text-[#c2c6ce] md:flex">
+          <span>&quot;&quot;로 감쌌거나 버튼을 클릭하세요 -&gt;</span>
+          <span>[정확히 일치]</span>
+          <button
+            className="text-[#596171] transition hover:text-[#111827] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9ca3af]"
+            onClick={onClear}
+            type="button"
+          >
+            [clear]
+          </button>
+        </div>
+      </div>
+
+      <div className="flex h-[74px] items-center gap-4 px-7">
+        <span
+          aria-hidden="true"
+          className="text-2xl font-semibold text-[#00cf45]"
+        >
+          $
+        </span>
+        <span className="text-2xl font-semibold text-[#69707d]">find</span>
+        <svg
+          aria-hidden="true"
+          className="h-6 w-6 shrink-0 text-[#8c939f]"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="m21 21-4.35-4.35m1.35-5.65a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2.4"
+          />
+        </svg>
+
+        <label className="sr-only" htmlFor="book-search-input">
+          도서 검색어
+        </label>
+        <input
+          aria-busy={isSubmitting}
+          autoComplete="off"
+          className="h-full min-w-0 flex-1 border-0 bg-transparent text-2xl font-semibold tracking-normal text-[#111827] outline-none placeholder:text-[#9ca3af]"
+          id="book-search-input"
+          name="query"
+          onChange={onChange}
+          placeholder="github"
+          value={inputValue}
+        />
+      </div>
     </section>
   );
 }
