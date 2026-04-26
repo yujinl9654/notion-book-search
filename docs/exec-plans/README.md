@@ -13,7 +13,7 @@
 ## 디렉터리 역할
 
 - `docs/exec-plans/active/`: 아직 진행 중이거나 아직 완료 처리되지 않은 기능 작업 계획
-- `docs/exec-plans/completed/`: 구현, 검증, commit 또는 `develop` 머지가 끝난 기능 작업 계획 보관소
+- `docs/exec-plans/completed/`: GitHub PR 생성 직전 최종 확인이 끝난 기능 작업 계획 보관소
 
 ## 기능 작업 시작 규칙
 
@@ -81,10 +81,12 @@
 
 ## 완료 처리 규칙
 
-active plan은 아래 조건 중 하나가 충족되면 `docs/exec-plans/completed/`로 이동합니다.
+active plan은 GitHub PR을 올리기 직전, 아래 조건을 모두 확인한 뒤 `docs/exec-plans/completed/`로 이동합니다.
 
 - 해당 작업 변경분이 커밋되었습니다.
-- 해당 작업 변경분이 `develop` 브랜치에 머지되었습니다.
+- PR에 포함할 변경 범위가 확정되었습니다.
+- 필수 품질 게이트가 통과했습니다.
+- product spec과 harness 문서가 현재 동작과 맞습니다.
 
 이동할 때는 파일명을 유지합니다.
 
@@ -102,10 +104,11 @@ completed로 이동하기 전에 아래를 확인합니다.
 - [ ] `docs/harness/pre-commit-quality-gates.md`의 필수 게이트가 통과했습니다.
 - [ ] 기능 변경이 있으면 관련 테스트가 추가되거나 갱신되었습니다.
 - [ ] product spec과 harness 문서가 현재 동작과 맞습니다.
-- [ ] 커밋이 생성되었거나 `develop`에 머지되었습니다.
+- [ ] 커밋이 생성되었습니다.
+- [ ] GitHub PR 생성 직전 상태입니다.
 
 ## 운영 메모
 
 - active plan은 작업 중인 의사결정과 검증 상태를 작게 유지하는 문서입니다.
-- completed plan은 과거 작업의 실행 기록입니다.
+- completed plan은 PR로 올릴 준비가 끝난 작업의 실행 기록입니다.
 - 완료된 plan을 다시 수정해야 할 정도로 새 작업이 생기면, completed 문서를 되살리기보다 새 active plan을 만듭니다.
