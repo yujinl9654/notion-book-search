@@ -8,10 +8,10 @@ feature 문서보다 범위를 좁게 두며, 각 케이스는 미래 자동화 
 
 ## 현재 검증 스냅샷
 
-- 현재 구현은 React + TypeScript + Tailwind 기반의 목 검색 위젯입니다.
+- 현재 구현은 React + TypeScript + Tailwind 기반의 Naver 책 검색 위젯입니다.
 - 수동 확인 기준으로 `idle`, `loading`, `success`, `empty`, `error` 상태를 한 화면에서 재현할 수 있습니다.
-- 오류 상태는 `error`가 포함된 검색어로 재현합니다.
-- 자동화 테스트는 `src/pages/book-search/ui/BookSearchPage.test.tsx`에서 시작했습니다.
+- 오류 상태는 Naver API 프록시 요청 실패 또는 오류 응답으로 재현합니다.
+- 자동화 테스트는 `src/pages/book-search/ui/BookSearchPage.test.tsx`와 `src/entities/book/api/searchBooks.test.ts`에서 시작했습니다.
 - 현재 검증은 `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm typecheck` 통과 및 필요 시 수동 상태 확인 기준입니다.
 
 ## [BOOK-SEARCH-001] 초기 화면에 검색 입력창이 보인다
@@ -74,6 +74,16 @@ feature 문서보다 범위를 좁게 두며, 각 케이스는 미래 자동화 
 - Prohibited Result: 요청은 성공했는데 결과 영역이 비어 있거나, 목록이 무너지거나, 항목을 식별할 수 없습니다.
 - Test Candidate: e2e
 
+## [BOOK-SEARCH-005A] Naver 응답은 화면용 Book 모델로 정리된다
+
+- Priority: P1
+- Purpose: 외부 API 응답 형식이 화면에 그대로 새지 않도록 합니다.
+- Conditions: Naver 책 검색 API가 JSON 응답을 반환하고, 제목에 `<b>` 강조 태그와 `pubdate` 8자리 날짜가 포함됩니다.
+- Input / Action: 검색 API 응답을 화면용 도서 목록으로 변환합니다.
+- Expected Result: 제목은 HTML 태그 없는 텍스트로 표시되고, `pubdate`는 사용자가 읽을 수 있는 날짜 문자열로 표시되며, ISBN 또는 링크 기준 식별자를 갖습니다.
+- Prohibited Result: `<b>` 태그가 화면 텍스트에 그대로 보이거나, 날짜가 의미를 알기 어려운 원본 숫자만으로 표시되거나, 식별자 없는 항목 때문에 목록 렌더링이 깨집니다.
+- Test Candidate: unit
+
 ## [BOOK-SEARCH-006] 선택적 필드가 비어 있어도 결과 렌더링이 깨지지 않는다
 
 - Priority: P1
@@ -124,6 +134,16 @@ feature 문서보다 범위를 좁게 두며, 각 케이스는 미래 자동화 
 - Prohibited Result: 입력이 계속 비활성화되거나, 자동 검색이 더 이상 동작하지 않거나, 새로고침만이 유일한 복구 수단이 됩니다.
 - Test Candidate: e2e
 
+## [BOOK-SEARCH-011] 결과 목록 끝 스크롤은 다음 결과를 이어 붙인다
+
+- Priority: P1
+- Purpose: 사용자가 결과 목록 안에서 더 많은 검색 결과를 자연스럽게 확인할 수 있어야 합니다.
+- Conditions: 첫 검색이 성공했고, Naver 응답의 `total`과 `display` 기준으로 다음 `start` 위치가 남아 있습니다.
+- Input / Action: 사용자가 입력창 아래 결과 영역을 목록 끝까지 스크롤합니다.
+- Expected Result: 같은 검색어와 다음 `start` 값으로 추가 요청이 실행되고, 성공 응답의 도서 항목이 기존 결과 아래에 이어 붙습니다.
+- Prohibited Result: 첫 결과 목록이 사라지거나, 같은 첫 페이지를 다시 요청하거나, 다른 검색어 결과가 현재 목록에 섞입니다.
+- Test Candidate: integration
+
 ## 첫 자동화 후보
 
 현재 자동화된 케이스:
@@ -132,10 +152,12 @@ feature 문서보다 범위를 좁게 두며, 각 케이스는 미래 자동화 
 2. `BOOK-SEARCH-001A` 검색어가 없을 때 입력창 아래 결과 영역이 빈 공간으로 유지되는지 확인
 3. `BOOK-SEARCH-002` 검색어 입력 후 debounce 시간이 지나면 자동 검색이 시작되고 결과가 렌더링되는지 확인
 4. `BOOK-SEARCH-003` 공백만 있는 검색어는 요청 상태로 전환되지 않는지 확인
+5. `BOOK-SEARCH-005A` Naver 응답을 화면용 `Book` 모델로 정리하는지 확인
+6. `BOOK-SEARCH-007` API 응답이 0건이면 빈 결과 상태를 보여주는지 확인
+7. `BOOK-SEARCH-008` API 요청 실패가 오류 상태로 전환되는지 확인
+8. `BOOK-SEARCH-011` 결과 영역 끝 스크롤 시 다음 `start` 값을 요청하고 기존 목록 아래에 결과를 붙이는지 확인
 
 다음 자동화 후보:
 
 1. `BOOK-SEARCH-006` 결과 렌더링 복원력 integration 테스트
-2. `BOOK-SEARCH-007` 빈 결과 흐름 e2e 테스트
-3. `BOOK-SEARCH-008` 오류 복구 흐름 e2e 테스트
-4. `BOOK-SEARCH-009` 새 검색이 이전 최종 상태를 덮어쓰는 integration 테스트
+2. `BOOK-SEARCH-009` 새 검색이 이전 최종 상태를 덮어쓰는 integration 테스트

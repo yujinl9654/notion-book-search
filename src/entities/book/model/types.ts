@@ -18,6 +18,9 @@ export type RequestStatus =
 export interface SearchRequestState {
   errorMessage: string;
   items: Book[];
+  isLoadingNextPage: boolean;
+  nextStart: number | null;
   status: RequestStatus;
   submittedQuery: string;
+  total: number;
 }
