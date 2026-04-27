@@ -80,7 +80,11 @@ export default function SearchPanel({
           id="book-search-input"
           name="query"
           onChange={onChange}
+<<<<<<< feat-naver-book-search-infinite-scroll
           placeholder="github"
+=======
+          placeholder="도서 제목, 저자, ISBN을 입력해 주세요"
+>>>>>>> develop
           value={inputValue}
         />
       </div>
